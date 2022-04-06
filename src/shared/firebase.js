@@ -1,6 +1,7 @@
 //firebase 9버전 부터는 임포터 형태가 아래로 바뀜
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 
 //firebase 프로젝트 불러오기
 //아래 키들은 .env파일에 변수로 저장하여 불러옴
@@ -15,7 +16,9 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUR_ID,
 };
 
-initializeApp(firebaseConfig);
-const authService = getAuth();
+const apiKey = firebaseConfig.apiKey;
 
-export { authService };
+firebase.initializeApp(firebaseConfig);
+const authService = firebase.auth();
+
+export { authService, apiKey };

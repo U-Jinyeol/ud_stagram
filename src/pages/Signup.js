@@ -1,23 +1,34 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+
+import { actionCreators } from "../redux/modules/user";
 
 import Grid from "../elements/Grid";
 import { getCookie, setCookie, deleteCookie } from "../shared/Cookie";
 
-const Login = () => {
+const Signup = () => {
+  const dispatch = useDispatch();
   const [id, setId] = useState("");
+  const [user_name, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordCheck, setPasswordCheck] = useState("");
 
-  //로그인 버튼 클릭 시 쿠키 생성 함수
-  const login = () => {
-    setCookie("user_id", "haha", 3);
-    setCookie("user_pwd", "pppp", 3);
+  const Signup = () => {
+    if (password !== passwordCheck) {
+      return;
+    }
+
+    if (id === "" || password === "" || user_name === "") {
+      return;
+    }
+
+    dispatch(actionCreators.signupFB(id, password, user_name));
   };
-
   return (
     <>
       <Grid padding="16px">
-        <H1>Login</H1>
+        <H1>Sign-up</H1>
 
         <Grid is_flex padding="16px px">
           <Form>
@@ -27,26 +38,42 @@ const Login = () => {
             <Label>아이디</Label>
             <Input
               type="email"
-              placeholder="Email"
+              placeholder="Email을 입력하세요"
               required
-              value={id}
               onChange={(e) => {
                 setId(e.target.value);
+              }}
+            ></Input>
+            <Label>닉네임</Label>
+            <Input
+              type="text"
+              placeholder="닉네임을 입력하세요"
+              required
+              onChange={(e) => {
+                setUserName(e.target.value);
               }}
             ></Input>
             <Label>비밀번호</Label>
             <Input
               type="password"
-              placeholder="Password"
+              placeholder="Password를 입력하세요"
               required
-              value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
             ></Input>
+            <Label>비밀번호 확인</Label>
+            <Input
+              type="password"
+              placeholder="Password를 다시 입력하세요"
+              required
+              onChange={(e) => {
+                setPasswordCheck(e.target.value);
+              }}
+            ></Input>
           </Form>
         </Grid>
-        <Button onClick={login}>로그인 하기</Button>
+        <Button onClick={Signup}>회원 가입</Button>
       </Grid>
     </>
   );
@@ -95,4 +122,4 @@ const Label = styled.label`
   margin-bottom: 0px;
 `;
 
-export default Login;
+export default Signup;
